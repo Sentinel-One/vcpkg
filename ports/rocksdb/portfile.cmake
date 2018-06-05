@@ -16,6 +16,7 @@ vcpkg_apply_patches(
     "${CMAKE_CURRENT_LIST_DIR}/0004-zlib-findpackage.patch"
     "${CMAKE_CURRENT_LIST_DIR}/use-find-package.patch"
     "${CMAKE_CURRENT_LIST_DIR}/pass-major-version.patch"
+    "${CMAKE_CURRENT_LIST_DIR}/rocksdb-access-violation-fix.patch"
 )
 
 file(REMOVE "${SOURCE_PATH}/cmake/modules/Findzlib.cmake")

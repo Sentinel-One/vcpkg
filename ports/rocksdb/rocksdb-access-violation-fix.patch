@@ -1,0 +1,26 @@
+From cd9449a73135ecc6e27b34897b8248179b410d2c Mon Sep 17 00:00:00 2001
+From: shpala <shpala@gmail.com>
+Date: Sun, 10 Jun 2018 17:51:05 +0300
+Subject: [PATCH] Fix an issue in WinEnvIO::GetSectorSize that causes an
+ unhandled access violation (and a crash).
+
+---
+ port/win/env_win.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/port/win/env_win.cc b/port/win/env_win.cc
+index 3bce0d52f..4ee200626 100644
+--- a/port/win/env_win.cc
++++ b/port/win/env_win.cc
+@@ -1097,7 +1097,7 @@ size_t WinEnvIO::GetSectorSize(const std::string& fname) {
+ 
+     DISK_GEOMETRY_EX geometry = { 0 };
+     ret = DeviceIoControl(hDevice, IOCTL_DISK_GET_DRIVE_GEOMETRY,
+-           nullptr, 0, &geometry, sizeof(geometry), nullptr, nullptr);
++           nullptr, 0, &geometry, sizeof(geometry), &output_bytes, nullptr);
+     if (ret) {
+       sector_size = geometry.Geometry.BytesPerSector;
+     }
+-- 
+2.17.1.windows.2
+

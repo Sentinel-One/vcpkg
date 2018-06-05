@@ -6,11 +6,3 @@ Default-Features: lz4
 Feature: lz4
 Build-Depends: lz4
 Description: lz4 support in rocksdb
-
-Feature: snappy
-Build-Depends: snappy
-Description: snappy support in rocksdb
-
-Feature: zlib
-Build-Depends: zlib
-Description: zlib support in rocksdb
