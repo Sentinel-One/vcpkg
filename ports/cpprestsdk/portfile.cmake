@@ -36,6 +36,7 @@ vcpkg_apply_patches(
     PATCHES
         "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch"
         "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch"
+        "${CMAKE_CURRENT_LIST_DIR}/remove-content-length-when-chunked.patch"
 )
 
 vcpkg_configure_cmake(
