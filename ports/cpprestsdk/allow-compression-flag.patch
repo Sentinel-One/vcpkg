@@ -1,0 +1,14 @@
+diff --git a/Release/CMakeLists.txt b/Release/CMakeLists.txt
+index 3b99b853..7af11905 100644
+--- a/Release/CMakeLists.txt
++++ b/Release/CMakeLists.txt
+@@ -141,6 +141,9 @@ elseif(ANDROID)
+     )
+ elseif(UNIX) # This includes OSX
+ elseif(WIN32)
++  if(NOT CPPREST_EXCLUDE_COMPRESSION)
++    add_definitions(-DCPPREST_HTTP_COMPRESSION)
++  endif()
+   add_definitions(-DUNICODE -D_UNICODE -DWIN32 -D_SCL_SECURE_NO_WARNINGS)
+   if(CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+     add_definitions(-D_WIN32_WINNT=0x0A00)

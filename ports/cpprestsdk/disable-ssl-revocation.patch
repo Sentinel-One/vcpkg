@@ -1,0 +1,20 @@
+diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
+index a1f69ab2..f823ae9e 100644
+--- a/Release/src/http/client/http_client_winhttp.cpp
++++ b/Release/src/http/client/http_client_winhttp.cpp
+@@ -856,6 +856,7 @@ protected:
+         DWORD ignoredCertificateValidationSteps = 0;
+         if (client_config().validate_certificates())
+         {
++#if 0
+             // if we are validating certificates, also turn on revocation checking
+             DWORD dwEnableSSLRevocOpt = WINHTTP_ENABLE_SSL_REVOCATION;
+             if (!WinHttpSetOption(winhttp_context->m_request_handle, WINHTTP_OPTION_ENABLE_FEATURE,
+@@ -866,6 +867,7 @@ protected:
+                 return;
+             }
+ 
++#endif
+             // check if the user has overridden the desired Common Name with the host header
+             const auto hostHeader = headers.find(_XPLATSTR("Host"));
+             if (hostHeader != headers.end())

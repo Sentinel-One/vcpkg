@@ -16,6 +16,21 @@ if(NOT VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
         -DWEBSOCKETPP_CONFIG_VERSION=${WEBSOCKETPP_PATH})
 endif()
 
+set(CPPREST_EXCLUDE_WEBSOCKETS ON)
+if("websockets" IN_LIST FEATURES)
+    set(CPPREST_EXCLUDE_WEBSOCKETS OFF)
+endif()
+
+set(CPPREST_EXCLUDE_BROTLI ON)
+if ("brotli" IN_LIST FEATURES)
+    set(CPPREST_EXCLUDE_BROTLI OFF)
+endif()
+
+vcpkg_apply_patches(
+    SOURCE_PATH ${SOURCE_PATH}
+    PATCHES "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch" "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch" "${CMAKE_CURRENT_LIST_DIR}/disable_autoproxy_machinery.patch"
+)
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}/Release
     PREFER_NINJA
@@ -23,7 +38,8 @@ vcpkg_configure_cmake(
         ${OPTIONS}
         -DBUILD_TESTS=OFF
         -DBUILD_SAMPLES=OFF
-        -DCPPREST_EXCLUDE_WEBSOCKETS=OFF
+        -DCPPREST_EXCLUDE_WEBSOCKETS=ON
+        -DCPPREST_EXCLUDE_COMPRESSION=OFF
         -DCPPREST_EXPORT_DIR=share/cpprestsdk
         -DWERROR=OFF
     OPTIONS_DEBUG
@@ -32,11 +48,11 @@ vcpkg_configure_cmake(
 
 vcpkg_install_cmake()
 
-vcpkg_fixup_cmake_targets()
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/share/cpprestsdk)
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/lib/share ${CURRENT_PACKAGES_DIR}/lib/share)
 
 file(INSTALL
     ${SOURCE_PATH}/license.txt
     DESTINATION ${CURRENT_PACKAGES_DIR}/share/cpprestsdk RENAME copyright)
 
 vcpkg_copy_pdbs()
-
