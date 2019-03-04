@@ -3,8 +3,8 @@ include(vcpkg_common_functions)
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO Microsoft/cpprestsdk
-    REF f940d5510ef3b724a1995f160b401f597301f6d4
-    SHA512 17b3e7a0146d1f3e39388c136a20a7bd56f2a08cb8967b2ac6090834e2353a2a3ef7a1828d255b3514b934ad2bd916201bcc80809f005f4dd88cef43b63b388c
+    REF v2.10.6
+    SHA512 f0848f329df80ced68132600914f0f4ba1ed42c7c16188e0f2bd41cf0c50173c27ca42c8db72ff239ca881bc8789fa4d1e3189c492832f6c22d36d504b7ce8dd
     HEAD_REF master
 )
 
@@ -28,7 +28,7 @@ endif()
 
 vcpkg_apply_patches(
     SOURCE_PATH ${SOURCE_PATH}
-    PATCHES "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch" "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch"
+    PATCHES "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch" "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch" "${CMAKE_CURRENT_LIST_DIR}/disable_autoproxy_machinery.patch"
 )
 
 vcpkg_configure_cmake(
