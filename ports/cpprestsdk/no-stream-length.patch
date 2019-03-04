@@ -1,0 +1,20 @@
+diff --git a/Release/src/http/common/http_msg.cpp b/Release/src/http/common/http_msg.cpp
+index 50ab8ed8..b4dfc0a6 100644
+--- a/Release/src/http/common/http_msg.cpp
++++ b/Release/src/http/common/http_msg.cpp
+@@ -316,6 +316,7 @@ void http_msg_base::_prepare_to_receive_data()
+ 
+ size_t http_msg_base::_get_stream_length()
+ {
++#if 0
+     auto& stream = instream();
+ 
+     if (stream.can_seek())
+@@ -325,6 +326,7 @@ size_t http_msg_base::_get_stream_length()
+         stream.seek(offset);
+         return static_cast<size_t>(end - offset);
+     }
++#endif
+ 
+     return std::numeric_limits<size_t>::max();
+ }
