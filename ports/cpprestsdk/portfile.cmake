@@ -38,6 +38,7 @@ vcpkg_apply_patches(
         "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch"
         "${CMAKE_CURRENT_LIST_DIR}/remove-content-length-when-chunked.patch"
         "${CMAKE_CURRENT_LIST_DIR}/no-stream-length.patch"
+        "${CMAKE_CURRENT_LIST_DIR}/tls-version.patch"
 )
 
 vcpkg_configure_cmake(
