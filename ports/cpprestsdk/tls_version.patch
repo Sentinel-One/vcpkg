@@ -1,12 +1,12 @@
 diff --git a/Release/include/cpprest/http_client.h b/Release/include/cpprest/http_client.h
-index 743e2b56..5440d815 100644
+index 743e2b56..bc71591f 100644
 --- a/Release/include/cpprest/http_client.h
 +++ b/Release/include/cpprest/http_client.h
 @@ -154,6 +154,9 @@ public:
      /// <param name="proxy">A reference to the web proxy object.</param>
      void set_proxy(web_proxy proxy) { m_proxy = std::move(proxy); }
  
-+    uint32_t tls_version() { return m_tls_version; }
++    const uint32_t tls_version() const { return m_tls_version; }
 +    void set_tls_version(uint32_t tls_version) { m_tls_version = tls_version; }
 +
      /// <summary>
