@@ -1,8 +1,16 @@
 diff --git a/Release/include/cpprest/http_client.h b/Release/include/cpprest/http_client.h
-index 743e2b56..bc71591f 100644
+index 743e2b56..3d3cabe8 100644
 --- a/Release/include/cpprest/http_client.h
 +++ b/Release/include/cpprest/http_client.h
-@@ -154,6 +154,9 @@ public:
+@@ -53,6 +53,7 @@ typedef void* native_handle;
+ #include "pplx/pplxtasks.h"
+ #include <limits>
+ #include <memory>
++#include <winhttp.h>
+ 
+ #if !defined(CPPREST_TARGET_XP)
+ #include "cpprest/oauth1.h"
+@@ -154,6 +155,9 @@ public:
      /// <param name="proxy">A reference to the web proxy object.</param>
      void set_proxy(web_proxy proxy) { m_proxy = std::move(proxy); }
  
@@ -12,7 +20,7 @@ index 743e2b56..bc71591f 100644
      /// <summary>
      /// Get the client credentials
      /// </summary>
-@@ -369,6 +372,8 @@ private:
+@@ -369,6 +373,8 @@ private:
  
      std::shared_ptr<oauth2::experimental::oauth2_config> m_oauth2;
      web_proxy m_proxy;
