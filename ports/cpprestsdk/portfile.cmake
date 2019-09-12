@@ -35,6 +35,7 @@ vcpkg_apply_patches(
     SOURCE_PATH ${SOURCE_PATH}
     PATCHES
         "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch"
+        "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch"
 )
 
 vcpkg_configure_cmake(
