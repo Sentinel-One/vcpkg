@@ -31,6 +31,12 @@ if("websockets" IN_LIST FEATURES)
     set(CPPREST_EXCLUDE_WEBSOCKETS OFF)
 endif()
 
+vcpkg_apply_patches(
+    SOURCE_PATH ${SOURCE_PATH}
+    PATCHES
+        "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch"
+)
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}/Release
     PREFER_NINJA
