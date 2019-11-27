@@ -28,7 +28,7 @@ endif()
 
 vcpkg_apply_patches(
     SOURCE_PATH ${SOURCE_PATH}
-    PATCHES "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch" "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch" "${CMAKE_CURRENT_LIST_DIR}/remove-content-length-when-chunked.patch" "${CMAKE_CURRENT_LIST_DIR}/no-stream-length.patch" "${CMAKE_CURRENT_LIST_DIR}/tls_version.patch"
+    PATCHES "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch" "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch" "${CMAKE_CURRENT_LIST_DIR}/remove-content-length-when-chunked.patch" "${CMAKE_CURRENT_LIST_DIR}/no-stream-length.patch" "${CMAKE_CURRENT_LIST_DIR}/tls_version.patch" "${CMAKE_CURRENT_LIST_DIR}/proxy-auth-required-with-not-seekable-streambuf-bugfix.patch"
 )
 
 vcpkg_configure_cmake(
