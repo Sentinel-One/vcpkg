@@ -1,0 +1,17 @@
+diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
+index 61a13abf..5e58f90c 100644
+--- a/Release/src/http/client/http_client_winhttp.cpp
++++ b/Release/src/http/client/http_client_winhttp.cpp
+@@ -1150,6 +1150,12 @@ protected:
+             }
+         }
+ 
++        utility::string_t dummy;
++        if (headers.match(header_names::transfer_encoding, dummy))
++        {
++            headers.remove(header_names::content_length);
++        }
++
+         utility::string_t flattened_headers = web::http::details::flatten_http_headers(headers);
+         if (winhttp_context->m_request.method() == http::methods::GET)
+         {

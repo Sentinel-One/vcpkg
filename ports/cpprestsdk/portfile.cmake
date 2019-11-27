@@ -31,6 +31,11 @@ if("websockets" IN_LIST FEATURES)
     set(CPPREST_EXCLUDE_WEBSOCKETS OFF)
 endif()
 
+vcpkg_apply_patches(
+    SOURCE_PATH ${SOURCE_PATH}
+    PATCHES "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch" "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch" "${CMAKE_CURRENT_LIST_DIR}/remove-content-length-when-chunked.patch" "${CMAKE_CURRENT_LIST_DIR}/no-stream-length.patch" "${CMAKE_CURRENT_LIST_DIR}/tls_version.patch" "${CMAKE_CURRENT_LIST_DIR}/proxy-auth-required-with-not-seekable-streambuf-bugfix.patch"
+)
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}/Release
     PREFER_NINJA
@@ -38,9 +43,9 @@ vcpkg_configure_cmake(
         ${OPTIONS}
         -DBUILD_TESTS=OFF
         -DBUILD_SAMPLES=OFF
-        -DCPPREST_EXCLUDE_BROTLI=${CPPREST_EXCLUDE_BROTLI}
-        -DCPPREST_EXCLUDE_COMPRESSION=${CPPREST_EXCLUDE_COMPRESSION}
-        -DCPPREST_EXCLUDE_WEBSOCKETS=${CPPREST_EXCLUDE_WEBSOCKETS}
+        -DCPPREST_EXCLUDE_BROTLI=OFF
+        -DCPPREST_EXCLUDE_COMPRESSION=OFF
+        -DCPPREST_EXCLUDE_WEBSOCKETS=ON
         -DCPPREST_EXPORT_DIR=share/cpprestsdk
         -DWERROR=OFF
     OPTIONS_DEBUG
