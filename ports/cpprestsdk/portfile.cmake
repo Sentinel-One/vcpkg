@@ -6,6 +6,13 @@ vcpkg_from_github(
     REF 6f602bee67b088a299d7901534af3bce6334ab38
     SHA512 747ade73ae63300a9063616982d45a3165f752a611a76a4bfdc5b678f0f9b8668e4fec21614641c42d2d6e1b43cf2c10c6439f8601d6c53e69c859a62a1f5259
     HEAD_REF master
+    PATCHES
+        disable-ssl-revocation.patch
+        allow-compression-flag.patch
+        remove-content-length-when-chunked.patch
+        no-stream-length.patch
+        tls_version.patch
+        proxy-auth-required-with-not-seekable-streambuf-bugfix.patch
 )
 
 set(OPTIONS)
@@ -30,11 +37,6 @@ set(CPPREST_EXCLUDE_WEBSOCKETS ON)
 if("websockets" IN_LIST FEATURES)
     set(CPPREST_EXCLUDE_WEBSOCKETS OFF)
 endif()
-
-vcpkg_apply_patches(
-    SOURCE_PATH ${SOURCE_PATH}
-    PATCHES "${CMAKE_CURRENT_LIST_DIR}/disable-ssl-revocation.patch" "${CMAKE_CURRENT_LIST_DIR}/allow-compression-flag.patch" "${CMAKE_CURRENT_LIST_DIR}/remove-content-length-when-chunked.patch" "${CMAKE_CURRENT_LIST_DIR}/no-stream-length.patch" "${CMAKE_CURRENT_LIST_DIR}/tls_version.patch" "${CMAKE_CURRENT_LIST_DIR}/proxy-auth-required-with-not-seekable-streambuf-bugfix.patch"
-)
 
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}/Release
