@@ -3,7 +3,7 @@ include(vcpkg_common_functions)
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO Microsoft/cpprestsdk
-    REF v2.10.14
+    REF 6f602bee67b088a299d7901534af3bce6334ab38
     SHA512 7208b8c31e42a9bda2bf1d5c65527e54e3f946ec57743aaf7058c12a311de78de354d5ff859f35b3a8936c8964ac5695a692e234f3365edc426cf9580f76cd4f
     HEAD_REF master
 )
