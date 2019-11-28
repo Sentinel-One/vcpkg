@@ -1,8 +1,8 @@
 diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
-index 61a13abf..a8591154 100644
+index 249bfcd5..7cbda13d 100644
 --- a/Release/src/http/client/http_client_winhttp.cpp
 +++ b/Release/src/http/client/http_client_winhttp.cpp
-@@ -1757,6 +1757,11 @@ private:
+@@ -1792,6 +1792,11 @@ private:
                  }
              }
          }

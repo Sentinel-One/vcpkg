@@ -1,5 +1,5 @@
 diff --git a/Release/CMakeLists.txt b/Release/CMakeLists.txt
-index 79739776..53976e75 100644
+index dd5d1dac..db845b88 100644
 --- a/Release/CMakeLists.txt
 +++ b/Release/CMakeLists.txt
 @@ -121,6 +121,9 @@ if(ANDROID)
