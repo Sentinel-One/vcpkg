@@ -1,15 +1,15 @@
 diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
-index 249bfcd5..2a1fbf2f 100644
+index 249bfcd5..7cce52ac 100644
 --- a/Release/src/http/client/http_client_winhttp.cpp
 +++ b/Release/src/http/client/http_client_winhttp.cpp
 @@ -1000,6 +1000,18 @@ protected:
              return;
          }
  
-+        int milliseconds = static_cast<int>(config.timeout<std::chrono::milliseconds>().count());
-+        if (m_prev_timeout.exchange(milliseconds) != milliseconds)
++        auto ms = client_config().timeout<std::chrono::milliseconds>();
++        if (m_prev_timeout.exchange(ms) != ms)
 +        {
-+            milliseconds = std::max<decltype(milliseconds)>(milliseconds, 1);
++            int milliseconds = std::max<int>(static_cast<int>(ms.count()), 1);
 +            if (!WinHttpSetTimeouts(m_hSession, milliseconds, milliseconds, milliseconds, milliseconds))
 +            {
 +                auto errorCode = GetLastError();
