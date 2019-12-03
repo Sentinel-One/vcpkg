@@ -1,16 +1,17 @@
 diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
-index 249bfcd5..7cbda13d 100644
+index 249bfcd5..f89a4ec4 100644
 --- a/Release/src/http/client/http_client_winhttp.cpp
 +++ b/Release/src/http/client/http_client_winhttp.cpp
-@@ -1792,6 +1792,11 @@ private:
-                 }
+@@ -1863,6 +1863,12 @@ private:
              }
          }
-+        else
-+        {
-+            // streambuf::getpos returns EOF on error, which means that the stream is probably not seekable.
+ 
++        // If stream is not seek-able, we can't resend the request, so return the 407
++        // after setting the creds.
++        if (rdpos == static_cast<std::char_traits<uint8_t>::pos_type>(std::char_traits<uint8_t>::eof())) {
 +            return false;
 +        }
-         p_request_context->m_compression_state = winhttp_request_context::compression_state();
- 
-         //  If we got ERROR_WINHTTP_RESEND_REQUEST, the response header is not available,
++
+         // Reset the request body type since it might have already started sending.
+         size_t content_length;
+         try
