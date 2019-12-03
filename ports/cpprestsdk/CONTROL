@@ -7,13 +7,9 @@ Description: C++11 JSON, REST, and OAuth library
 Default-Features: default-features
 
 Feature: default-features
-Build-Depends: cpprestsdk[brotli] (windows)
+Build-Depends: cpprestsdk (windows)
 Description: Features installed by default
 
 Feature: websockets
 Build-Depends: websocketpp (!uwp), openssl (!uwp), boost-system (!uwp), boost-date-time (!uwp), boost-regex (!uwp)
 Description: Websockets support
-
-Feature: brotli
-Build-Depends: brotli
-Description: Brotli compression support
