@@ -12,7 +12,6 @@ vcpkg_from_github(
         remove-content-length-when-chunked.patch
         no-stream-length.patch
         tls_version.patch
-        proxy-auth-required-with-not-seekable-streambuf-bugfix.patch
         allow-setting-new-http-timeout.patch
 )
 
