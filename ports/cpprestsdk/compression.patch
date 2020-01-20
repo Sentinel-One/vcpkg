@@ -1,0 +1,25 @@
+diff --git a/Release/include/cpprest/details/http_constants.dat b/Release/include/cpprest/details/http_constants.dat
+index c3b1a53c..a6a7208b 100644
+--- a/Release/include/cpprest/details/http_constants.dat
++++ b/Release/include/cpprest/details/http_constants.dat
+@@ -122,6 +122,7 @@ DAT(vary,                   "Vary")
+ DAT(via,                    "Via")
+ DAT(warning,                "Warning")
+ DAT(www_authenticate,       "WWW-Authenticate")
++DAT(x_enc,                  "X-ENC")
+ #endif // _HEADER_NAMES
+ 
+ #ifdef _MIME_TYPES
+diff --git a/Release/src/http/common/http_msg.cpp b/Release/src/http/common/http_msg.cpp
+index 2888edb3..278af5fc 100644
+--- a/Release/src/http/common/http_msg.cpp
++++ b/Release/src/http/common/http_msg.cpp
+@@ -361,7 +361,7 @@ size_t http_msg_base::_get_content_length(bool honor_compression)
+         {
+             // A compressor is set; this implies transfer encoding, since we don't know the compressed length
+             // up front for content encoding.  We return the uncompressed length if we can figure it out.
+-            headers().add(header_names::transfer_encoding, m_compressor->algorithm());
++            headers().add(header_names::x_enc, m_compressor->algorithm());
+             headers().add(header_names::transfer_encoding, _XPLATSTR("chunked"));
+             return (std::numeric_limits<size_t>::max)();
+         }

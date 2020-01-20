@@ -13,6 +13,7 @@ vcpkg_from_github(
         no-stream-length.patch
         tls_version.patch
         allow-setting-new-http-timeout.patch
+        compression.patch
 )
 
 set(OPTIONS)
