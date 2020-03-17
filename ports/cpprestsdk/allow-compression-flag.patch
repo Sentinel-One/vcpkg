@@ -1,8 +1,8 @@
 diff --git a/Release/CMakeLists.txt b/Release/CMakeLists.txt
-index dd5d1dac..db845b88 100644
+index 18b0cb3f..35c08bef 100644
 --- a/Release/CMakeLists.txt
 +++ b/Release/CMakeLists.txt
-@@ -121,6 +121,9 @@ if(ANDROID)
+@@ -122,6 +122,9 @@ if(ANDROID)
    set(ANDROID_LIBS atomic dl)
  elseif(UNIX) # This includes OSX
  elseif(WIN32)

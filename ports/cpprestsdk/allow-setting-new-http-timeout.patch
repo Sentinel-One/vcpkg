@@ -1,8 +1,8 @@
 diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
-index 249bfcd5..7cce52ac 100644
+index 3f09f944..bb089392 100644
 --- a/Release/src/http/client/http_client_winhttp.cpp
 +++ b/Release/src/http/client/http_client_winhttp.cpp
-@@ -1000,6 +1000,18 @@ protected:
+@@ -966,6 +966,18 @@ protected:
              return;
          }
  
@@ -21,7 +21,7 @@ index 249bfcd5..7cce52ac 100644
          http_request& msg = request->m_request;
          http_headers& headers = msg.headers();
          std::shared_ptr<winhttp_request_context> winhttp_context =
-@@ -2491,6 +2503,7 @@ private:
+@@ -2475,6 +2487,7 @@ private:
      }
  
      std::atomic<bool> m_opened;

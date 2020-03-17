@@ -1,0 +1,113 @@
+diff --git a/Release/include/cpprest/http_msg.h b/Release/include/cpprest/http_msg.h
+index 50f05ef2..bc62f286 100644
+--- a/Release/include/cpprest/http_msg.h
++++ b/Release/include/cpprest/http_msg.h
+@@ -865,6 +865,8 @@ public:
+ 
+     _ASYNCRTIMP void set_request_uri(const uri&);
+ 
++    const utility::string_t& local_address() const { return m_local_address; }
++
+     const utility::string_t& remote_address() const { return m_remote_address; }
+ 
+     const pplx::cancellation_token& cancellation_token() const { return m_cancellationToken; }
+@@ -901,6 +903,8 @@ public:
+ 
+     void _set_base_uri(const http::uri& base_uri) { m_base_uri = base_uri; }
+ 
++    void _set_local_address(const utility::string_t& local_address) { m_local_address = local_address; }
++
+     void _set_remote_address(const utility::string_t& remote_address) { m_remote_address = remote_address; }
+ 
+ private:
+@@ -929,6 +933,8 @@ private:
+ 
+     pplx::task_completion_event<http_response> m_response;
+ 
++    utility::string_t m_local_address;
++
+     utility::string_t m_remote_address;
+ };
+ 
+@@ -1024,6 +1030,12 @@ public:
+     /// <returns>The HTTP protocol version.</returns>
+     http::http_version http_version() const { return _m_impl->http_version(); }
+ 
++    /// <summary>
++    /// Returns a string representation of the local IP address.
++    /// </summary>
++    /// <returns>The local IP address.</returns>
++    const utility::string_t& local_address() const { return _m_impl->local_address(); }
++
+     /// <summary>
+     /// Returns a string representation of the remote IP address.
+     /// </summary>
+diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
+index bb089392..276a29b3 100644
+--- a/Release/src/http/client/http_client_winhttp.cpp
++++ b/Release/src/http/client/http_client_winhttp.cpp
+@@ -18,6 +18,7 @@
+ #include "../common/internal_http_helpers.h"
+ #include "cpprest/http_headers.h"
+ #include "http_client_impl.h"
++#include <http.h>
+ #ifdef WIN32
+ #include <Wincrypt.h>
+ #endif
+@@ -164,6 +165,28 @@ static std::string build_error_msg(_In_ WINHTTP_ASYNC_RESULT* error_result)
+     }
+ }
+ 
++// Helper function to get address string from socket
++static utility::string_t get_address_string(SOCKADDR_STORAGE* ss)
++{
++    std::vector<wchar_t> addressBuffer(50);
++
++    if (ss->ss_family == AF_INET6)
++    {
++        auto inAddr = &reinterpret_cast<SOCKADDR_IN6*>(ss)->sin6_addr;
++        InetNtopW(AF_INET6, inAddr, &addressBuffer[0], addressBuffer.size());
++    }
++    else if (ss->ss_family == AF_INET)
++    {
++        auto inAddr = &reinterpret_cast<SOCKADDR_IN*>(ss)->sin_addr;
++        InetNtopW(AF_INET, inAddr, &addressBuffer[0], addressBuffer.size());
++    }
++    else
++    {
++        addressBuffer[0] = L'\0';
++    }
++
++    return utility::string_t(addressBuffer.data());
++}
+ 
+ class memory_holder
+ {
+@@ -1991,6 +2014,15 @@ private:
+                                                         build_error_msg(errorCode, "WinHttpReceiveResponse"));
+                     }
+                 }
++                WINHTTP_CONNECTION_INFO connInfo {};
++                DWORD dwConnInfoSize = sizeof(WINHTTP_CONNECTION_INFO);
++                if (WinHttpQueryOption(hRequestHandle, WINHTTP_OPTION_CONNECTION_INFO, &connInfo, &dwConnInfoSize))
++                {
++                    p_request_context->m_request._get_impl()->_set_local_address(
++                        get_address_string(&connInfo.LocalAddress));
++                    p_request_context->m_request._get_impl()->_set_remote_address(
++                        get_address_string(&connInfo.RemoteAddress));
++                }
+                 return;
+             }
+             case WINHTTP_CALLBACK_STATUS_SENDING_REQUEST: p_request_context->on_send_request_validate_cn(); return;
+diff --git a/Release/src/pch/stdafx.h b/Release/src/pch/stdafx.h
+index 2061bea7..b5292813 100644
+--- a/Release/src/pch/stdafx.h
++++ b/Release/src/pch/stdafx.h
+@@ -39,6 +39,7 @@
+ 
+ // Windows Header Files:
+ #ifndef __cplusplus_winrt
++#include <winsock2.h>
+ #include <winhttp.h>
+ #endif !__cplusplus_winrt
+ 

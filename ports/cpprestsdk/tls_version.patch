@@ -1,5 +1,5 @@
 diff --git a/Release/include/cpprest/http_client.h b/Release/include/cpprest/http_client.h
-index 0bedfbd4..2e334a35 100644
+index 82fa3222..1d9ba8f3 100644
 --- a/Release/include/cpprest/http_client.h
 +++ b/Release/include/cpprest/http_client.h
 @@ -53,6 +53,7 @@ typedef void* native_handle;
@@ -30,11 +30,11 @@ index 0bedfbd4..2e334a35 100644
      // Whether or not to guarantee ordering, i.e. only using one underlying TCP connection.
      bool m_guarantee_order;
 diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
-index 249bfcd5..fb0996e6 100644
+index 0aab0c47..3f09f944 100644
 --- a/Release/src/http/client/http_client_winhttp.cpp
 +++ b/Release/src/http/client/http_client_winhttp.cpp
-@@ -948,8 +948,7 @@ protected:
- #if _WIN32_WINNT >= _WIN32_WINNT_VISTA
+@@ -915,8 +915,7 @@ protected:
+ #if (_WIN32_WINNT >= _WIN32_WINNT_VISTA) || defined(CPPREST_FORCE_HTTP_CLIENT_WINHTTPPAL)
          BOOL win32_result(FALSE);
  
 -        DWORD secure_protocols(WINHTTP_FLAG_SECURE_PROTOCOL_SSL3 | WINHTTP_FLAG_SECURE_PROTOCOL_TLS1 |

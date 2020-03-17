@@ -1,8 +1,8 @@
 diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
-index 249bfcd5..01363caf 100644
+index fc2bfbae..1436a2b1 100644
 --- a/Release/src/http/client/http_client_winhttp.cpp
 +++ b/Release/src/http/client/http_client_winhttp.cpp
-@@ -1108,6 +1108,7 @@ protected:
+@@ -1086,6 +1086,7 @@ protected:
          DWORD ignoredCertificateValidationSteps = 0;
          if (client_config().validate_certificates())
          {
@@ -10,7 +10,7 @@ index 249bfcd5..01363caf 100644
              // if we are validating certificates, also turn on revocation checking
              DWORD dwEnableSSLRevocationOpt = WINHTTP_ENABLE_SSL_REVOCATION;
              if (!WinHttpSetOption(winhttp_context->m_request_handle,
-@@ -1120,6 +1121,7 @@ protected:
+@@ -1098,6 +1099,7 @@ protected:
                  return;
              }
  

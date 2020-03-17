@@ -3,8 +3,8 @@ include(vcpkg_common_functions)
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO Microsoft/cpprestsdk
-    REF 6f602bee67b088a299d7901534af3bce6334ab38
-    SHA512 747ade73ae63300a9063616982d45a3165f752a611a76a4bfdc5b678f0f9b8668e4fec21614641c42d2d6e1b43cf2c10c6439f8601d6c53e69c859a62a1f5259
+    REF b94bc32ff84e815ba44c567f6fe4af5f5f6b3048
+    SHA512 be02fd492a40c8a162376d7291f7551ddc908e6f4476ddd76902dba175d71079124e574265c4b5882c77cfae9e40763f4c27c08dbbcb5ff7a57a94ed430a2ab2 
     HEAD_REF master
     PATCHES
         disable-ssl-revocation.patch
@@ -14,6 +14,7 @@ vcpkg_from_github(
         tls_version.patch
         allow-setting-new-http-timeout.patch
         compression.patch
+        local_address.patch
 )
 
 set(OPTIONS)

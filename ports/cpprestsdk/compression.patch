@@ -11,7 +11,7 @@ index c3b1a53c..a6a7208b 100644
  
  #ifdef _MIME_TYPES
 diff --git a/Release/src/http/common/http_msg.cpp b/Release/src/http/common/http_msg.cpp
-index 2888edb3..278af5fc 100644
+index 687bcfb5..b5938861 100644
 --- a/Release/src/http/common/http_msg.cpp
 +++ b/Release/src/http/common/http_msg.cpp
 @@ -361,7 +361,7 @@ size_t http_msg_base::_get_content_length(bool honor_compression)
