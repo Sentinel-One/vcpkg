@@ -1,0 +1,130 @@
+diff --git a/include/SQLiteCpp/Column.h b/include/SQLiteCpp/Column.h
+index 48a9ee8..cf0f24c 100644
+--- a/include/SQLiteCpp/Column.h
++++ b/include/SQLiteCpp/Column.h
+@@ -91,6 +91,7 @@ public:
+      *          thus you must copy it before using it beyond its scope (to a std::string for instance).
+      */
+     const char* getText(const char* apDefaultValue = "") const noexcept;
++    const wchar_t* getText16(const wchar_t* apDefaultValue = L"") const noexcept;
+     /**
+      * @brief Return a pointer to the binary blob value of the column.
+      *
+@@ -227,6 +228,12 @@ public:
+     {
+         return getText();
+     }
++
++    operator const wchar_t* () const
++    {
++        return getText16();
++    }
++
+     /**
+      * @brief Inline cast operator to void*
+      *
+diff --git a/include/SQLiteCpp/Statement.h b/include/SQLiteCpp/Statement.h
+index 5d6a73c..1ec0aa4 100644
+--- a/include/SQLiteCpp/Statement.h
++++ b/include/SQLiteCpp/Statement.h
+@@ -166,6 +166,7 @@ public:
+      * @note Uses the SQLITE_TRANSIENT flag, making a copy of the data, for SQLite internal use
+      */
+     void bind(const int aIndex, const std::string&  aValue);
++    void bind(const int aIndex, const std::wstring&  aValue);
+     /**
+      * @brief Bind a text value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement (aIndex >= 1)
+      *
+@@ -186,6 +187,7 @@ public:
+      * @warning Uses the SQLITE_STATIC flag, avoiding a copy of the data. The string must remains unchanged while executing the statement.
+      */
+     void bindNoCopy(const int aIndex, const std::string&    aValue);
++    void bindNoCopy(const int aIndex, const std::wstring&    aValue);
+     /**
+      * @brief Bind a text value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement (aIndex >= 1)
+      *
+@@ -262,6 +264,11 @@ public:
+     {
+         bind(getIndex(apName), aValue);
+     }
++
++    void bind(const char* apName, const std::wstring& aValue)
++    {
++        bind(getIndex(apName), aValue);
++    }
+     /**
+      * @brief Bind a text value to a named parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement (aIndex >= 1)
+      *
+@@ -291,6 +298,11 @@ public:
+     {
+         bindNoCopy(getIndex(apName), aValue);
+     }
++
++    void bindNoCopy(const char* apName, const std::wstring& aValue)
++    {
++        bindNoCopy(getIndex(apName), aValue);
++    }
+     /**
+      * @brief Bind a text value to a named parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement (aIndex >= 1)
+      *
+@@ -406,6 +418,11 @@ public:
+     {
+         bindNoCopy(aName.c_str(), aValue);
+     }
++
++    void bindNoCopy(const std::string& aName, const std::wstring& aValue)
++    {
++        bindNoCopy(aName.c_str(), aValue);
++    }
+     /**
+      * @brief Bind a text value to a named parameter "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement (aIndex >= 1)
+      *
+diff --git a/src/Column.cpp b/src/Column.cpp
+index b3960fe..30cc423 100644
+--- a/src/Column.cpp
++++ b/src/Column.cpp
+@@ -77,6 +77,12 @@ const char* Column::getText(const char* apDefaultValue /* = "" */) const noexcep
+     return (pText?pText:apDefaultValue);
+ }
+ 
++const wchar_t* Column::getText16(const wchar_t* apDefaultValue /* = "" */) const noexcept
++{
++    const wchar_t* pText = reinterpret_cast<const wchar_t*>(sqlite3_column_text16(mStmtPtr, mIndex));
++    return (pText ? pText : apDefaultValue);
++}
++
+ // Return a pointer to the blob value (*not* NULL terminated) of the column specified by its index starting at 0
+ const void* Column::getBlob() const noexcept
+ {
+diff --git a/src/Statement.cpp b/src/Statement.cpp
+index c981ccb..ba28f53 100644
+--- a/src/Statement.cpp
++++ b/src/Statement.cpp
+@@ -104,6 +104,13 @@ void Statement::bind(const int aIndex, const std::string& aValue)
+     check(ret);
+ }
+ 
++void Statement::bind(const int aIndex, const std::wstring& aValue)
++{
++    const int ret = sqlite3_bind_text16(mStmtPtr, aIndex, aValue.c_str(),
++                                        sizeof(wchar_t) * static_cast<int>(aValue.size()), SQLITE_TRANSIENT);
++    check(ret);
++}
++
+ // Bind a text value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+ void Statement::bind(const int aIndex, const char* apValue)
+ {
+@@ -126,6 +133,13 @@ void Statement::bindNoCopy(const int aIndex, const std::string& aValue)
+     check(ret);
+ }
+ 
++void Statement::bindNoCopy(const int aIndex, const std::wstring& aValue)
++{
++    const int ret = sqlite3_bind_text16(mStmtPtr, aIndex, aValue.c_str(),
++                                        sizeof(wchar_t) * static_cast<int>(aValue.size()), SQLITE_STATIC);
++    check(ret);
++}
++
+ // Bind a text value to a parameter "?", "?NNN", ":VVV", "@VVV" or "$VVV" in the SQL prepared statement
+ void Statement::bindNoCopy(const int aIndex, const char* apValue)
+ {
