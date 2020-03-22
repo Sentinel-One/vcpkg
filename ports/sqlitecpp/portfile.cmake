@@ -9,6 +9,7 @@ vcpkg_from_github(OUT_SOURCE_PATH SOURCE_PATH
     SHA512 d0a440e2e96fca9aac7fe73d46bb6508825a82547dca1e9c93d8c3ca46878fa137e7a2a7a865bcfa641d0236e26307a3342d55fc83578552a37eec7565642d91
     PATCHES
         0001-Find-external-sqlite3.patch
+        0002-utf16.patch
 )
 
 vcpkg_configure_cmake(
