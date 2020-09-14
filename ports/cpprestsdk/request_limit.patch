@@ -1,0 +1,48 @@
+diff --git a/Release/include/cpprest/http_client.h b/Release/include/cpprest/http_client.h
+index 82fa3222..4ebb81a1 100644
+--- a/Release/include/cpprest/http_client.h
++++ b/Release/include/cpprest/http_client.h
+@@ -327,6 +327,17 @@ public:
+     {
+         if (m_set_user_nativehandle_options) m_set_user_nativehandle_options(handle);
+     }
++    /******************************************************/
++    void set_size_limiter_callback(const std::function<bool(size_t)>& callback)
++    {
++        m_size_limiter_callback = callback;
++    }
++
++    void invoke_size_limiter(size_t content_length) const
++    {
++        if (m_size_limiter_callback) m_size_limiter_callback(content_length);
++    }
++    /******************************************************/
+ 
+ #if !defined(_WIN32) && !defined(__cplusplus_winrt) || defined(CPPREST_FORCE_HTTP_CLIENT_ASIO)
+     /// <summary>
+@@ -384,7 +395,7 @@ private:
+ 
+     std::function<void(native_handle)> m_set_user_nativehandle_options;
+     std::function<void(native_handle)> m_set_user_nativesessionhandle_options;
+-
++    std::function<bool(size_t)> m_size_limiter_callback;
+ #if !defined(_WIN32) && !defined(__cplusplus_winrt) || defined(CPPREST_FORCE_HTTP_CLIENT_ASIO)
+     std::function<void(boost::asio::ssl::context&)> m_ssl_context_callback;
+     bool m_tlsext_sni_enabled;
+diff --git a/Release/src/http/client/http_client_winhttp.cpp b/Release/src/http/client/http_client_winhttp.cpp
+index fc2bfbae..975234d1 100644
+--- a/Release/src/http/client/http_client_winhttp.cpp
++++ b/Release/src/http/client/http_client_winhttp.cpp
+@@ -1210,6 +1210,12 @@ protected:
+             return;
+         }
+ 
++        if (client_config().invoke_size_limiter(content_length)) {
++            m_response._get_impl()->_complete(0);
++            finish();
++            return;
++        }
++
+         // Only need to cache the request body if user specified and the request stream doesn't support seeking.
+         if (winhttp_context->m_bodyType != no_body && client_config().buffer_request() &&
+             !winhttp_context->_get_readbuffer().can_seek())

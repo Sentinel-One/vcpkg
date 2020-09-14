@@ -15,6 +15,7 @@ vcpkg_from_github(
         allow-setting-new-http-timeout.patch
         compression.patch
         local_address.patch
+        request_limit.patch
 )
 
 set(OPTIONS)
