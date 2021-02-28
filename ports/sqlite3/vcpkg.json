@@ -3,6 +3,9 @@
   "version": "3.34.1",
   "description": "SQLite is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.",
   "homepage": "https://sqlite.org/",
+  "default-features": [
+    "json1"
+  ],
   "features": {
     "geopoly": {
       "description": "enable geopoly functionality for sqlite3"
